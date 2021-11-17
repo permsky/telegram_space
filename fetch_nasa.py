@@ -13,10 +13,10 @@ def get_photo_links(url: str, params: dict) -> list:
     """Return links on Astronomy Picture of the Day."""
     response = requests.get(url, params=params)
     response.raise_for_status()
-    APOD_urls = []
-    for APOD in response.json():
-        APOD_urls.append(APOD['url'])
-    return APOD_urls
+    apod_urls = []
+    for apod in response.json():
+        apod_urls.append(apod['url'])
+    return apod_urls
 
 
 def get_extension(url: str) -> str:
@@ -26,7 +26,7 @@ def get_extension(url: str) -> str:
     return os.path.splitext(url_path)[1]
 
 
-def fetch_APOD(url: str, params: dict, directory: str) -> None:
+def fetch_apod(url: str, params: dict, directory: str) -> None:
     """Fetch APOD into determined directory."""
     photo_links = get_photo_links(url, params)
     Path(directory).mkdir(exist_ok=True)
@@ -38,7 +38,7 @@ def fetch_APOD(url: str, params: dict, directory: str) -> None:
         download_image(photo_link, image_name)
 
 
-def fetch_EPIC(url: str, params: dict, directory: str) -> None:
+def fetch_epic(url: str, params: dict, directory: str) -> None:
     """Fetch EPIC into determined directory."""
     response = requests.get(url, params=params)
     response.raise_for_status()
@@ -60,18 +60,23 @@ def fetch_EPIC(url: str, params: dict, directory: str) -> None:
             img.write(response.content)
 
 
-if __name__ == '__main__':
-    load_dotenv()
-    NASA_TOKEN = os.getenv('NASA_TOKEN')
-    APOD_url = 'https://api.nasa.gov/planetary/apod'
-    APOD_get_params = {
-        'api_key': NASA_TOKEN,
+def main() -> None:
+    """Fetch EPIC and APOD images from NASA."""
+    nasa_token = os.getenv('NASA_TOKEN')
+    apod_url = 'https://api.nasa.gov/planetary/apod'
+    apod_get_params = {
+        'api_key': nasa_token,
         'start_date': '2021-10-07',
         'end_date': '2021-11-07',
     }
-    APOD_images_directory = './apod_images/'
-    fetch_APOD(APOD_url, APOD_get_params, APOD_images_directory)
-    EPIC_url = 'https://api.nasa.gov/EPIC/api/natural/images'
-    EPIC_get_params = {'api_key': NASA_TOKEN}
-    EPIC_images_directory = './epic_images/'
-    fetch_EPIC(EPIC_url, EPIC_get_params, EPIC_images_directory)
+    apod_images_directory = './apod_images/'
+    fetch_apod(apod_url, apod_get_params, apod_images_directory)
+    epic_url = 'https://api.nasa.gov/EPIC/api/natural/images'
+    epic_get_params = {'api_key': nasa_token}
+    epic_images_directory = './epic_images/'
+    fetch_epic(epic_url, epic_get_params, epic_images_directory)
+
+
+if __name__ == '__main__':
+    load_dotenv()
+    main()

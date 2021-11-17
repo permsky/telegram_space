@@ -19,9 +19,14 @@ def fetch_spacex_launch(url: str, directory: str) -> None:
     for photo_number, photo_link in enumerate(photo_links):
         image_name = f'{directory}spacex{photo_number}.jpg' 
         download_image(photo_link, image_name)
-    
 
-if __name__ == '__main__':
+
+def main() -> None:
+    """Fetch SpaceX 99th launch photos."""
     spacex_launch_url = 'https://api.spacexdata.com/v3/launches/99'
     images_directory = './images/'
     fetch_spacex_launch(spacex_launch_url, images_directory)
+
+
+if __name__ == '__main__':
+    main()
