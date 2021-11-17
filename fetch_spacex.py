@@ -2,21 +2,14 @@ from pathlib import Path
 
 import requests
 
+from utils import download_image
+
 
 def get_photo_links(url: str) -> list:
     """Return list of links on photos of SpaceX launch."""
     response = requests.get(url)
     response.raise_for_status() 
     return response.json()['links']['flickr_images']
-
-
-def download_image(url: str, image_name: str) -> None:
-    """Download image from url."""
-    response = requests.get(url)
-    response.raise_for_status()
-
-    with open(image_name, 'wb') as img:
-        img.write(response.content)
 
 
 def fetch_spacex_launch(url: str, directory: str) -> None:

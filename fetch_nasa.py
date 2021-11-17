@@ -6,6 +6,8 @@ from urllib.parse import unquote, urlsplit
 import requests
 from dotenv import load_dotenv
 
+from utils import download_image
+
 
 def get_photo_links(url: str, params: dict) -> list:
     """Return links on Astronomy Picture of the Day."""
@@ -15,15 +17,6 @@ def get_photo_links(url: str, params: dict) -> list:
     for APOD in response.json():
         APOD_urls_list.append(APOD['url'])
     return APOD_urls_list
-
-
-def download_image(url: str, image_name: str) -> None:
-    """Download image from url."""
-    response = requests.get(url)
-    response.raise_for_status()
-
-    with open(image_name, 'wb') as img:
-        img.write(response.content)
 
 
 def get_extension(url: str) -> str:
