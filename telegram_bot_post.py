@@ -18,7 +18,8 @@ if __name__ == '__main__':
     while True:
         for image_number, image in enumerate(images_list):
             image = f'{directory}/{image}'
-            bot.send_photo(chat_id=chat_id, photo=open(image, 'rb'))
+            with open(image, 'rb') as photo:
+                bot.send_photo(chat_id=chat_id, photo=photo)
             if image_number == len(images_list) - 1:
                 print('All images are published.')
                 exit(0)
