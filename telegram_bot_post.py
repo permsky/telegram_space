@@ -14,13 +14,13 @@ if __name__ == '__main__':
     message_text = 'Добро пожаловать!'
     bot.send_message(chat_id=chat_id, text=message_text)
     directory = 'apod_images'
-    images_list = os.listdir(directory)
+    images = os.listdir(directory)
     while True:
-        for image_number, image in enumerate(images_list):
+        for image_number, image in enumerate(images):
             image = f'{directory}/{image}'
             with open(image, 'rb') as photo:
                 bot.send_photo(chat_id=chat_id, photo=photo)
-            if image_number == len(images_list) - 1:
+            if image_number == len(images) - 1:
                 print('All images are published.')
                 exit(0)
             if delay:

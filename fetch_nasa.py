@@ -13,10 +13,10 @@ def get_photo_links(url: str, params: dict) -> list:
     """Return links on Astronomy Picture of the Day."""
     response = requests.get(url, params=params)
     response.raise_for_status()
-    APOD_urls_list = []
+    APOD_urls = []
     for APOD in response.json():
-        APOD_urls_list.append(APOD['url'])
-    return APOD_urls_list
+        APOD_urls.append(APOD['url'])
+    return APOD_urls
 
 
 def get_extension(url: str) -> str:
@@ -42,8 +42,8 @@ def fetch_EPIC(url: str, params: dict, directory: str) -> None:
     """Fetch EPIC into determined directory."""
     response = requests.get(url, params=params)
     response.raise_for_status()
-    images_list = response.json()
-    for image in images_list:
+    images = response.json()
+    for image in images:
         image_name = image['image']
         image_date = datetime.datetime.fromisoformat(image['date'])
         formatted_image_date = image_date.strftime('%Y/%m/%d')
